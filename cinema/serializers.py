@@ -5,14 +5,14 @@ from cinema.models import Movie
 
 class MovieSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    title = serializers.CharField(max_length=255, required=True)
+    title = serializers.CharField(max_length=255)
     description = serializers.CharField(required=False)
-    duration = serializers.IntegerField(min_value=0, required=True)
+    duration = serializers.IntegerField(min_value=0)
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Movie:
         return Movie.objects.create(**validated_data)
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Movie, validated_data: dict) -> Movie:
         instance.title = validated_data.get("title", instance.title)
         instance.description = validated_data.get(
             "description",
